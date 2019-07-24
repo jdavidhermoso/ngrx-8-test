@@ -11,10 +11,12 @@ import { selectIsAppLoading } from './selectors/ui-state.selectors';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  public isAppLoading$: Observable<boolean>;
+  public isAppLoading: boolean = false;
 
   constructor(private store: Store<AppState>) {
-    this.isAppLoading$ = this.store.pipe(select(selectIsAppLoading));
+    this.store.pipe(select(selectIsAppLoading)).subscribe((isAppLoading: boolean) => {
+      this.isAppLoading = isAppLoading;
+    })
   }
 
   public onLogin() {
@@ -22,10 +24,14 @@ export class AppComponent {
   }
 
   public startAppLoading() {
-    this.store.dispatch(loadingStarted({ isAppLoading: true }));
+    if (!this.isAppLoading) {
+      this.store.dispatch(loadingStarted({ isAppLoading: true }));
+    }
   }
 
   public endAppLoading() {
-    this.store.dispatch(loadingFinished({ isAppLoading: false }));
+    if (this.isAppLoading) {
+      this.store.dispatch(loadingFinished({ isAppLoading: false }));
+    }
   }
 }
