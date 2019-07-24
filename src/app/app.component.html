@@ -1,0 +1,12 @@
+<div *ngIf="isAppLoading$ | async">
+  App loader
+</div>
+
+
+<button (click)="startAppLoading()">
+  Start loading
+</button>
+
+<button (click)="endAppLoading()">
+  End loading
+</button>
